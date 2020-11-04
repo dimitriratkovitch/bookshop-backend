@@ -29,6 +29,11 @@
       },
       "uaa": {
         "kind": "xsuaa"
+      },
+      "auth": {
+        "passport": {
+          "strategy": "JWT"
+        }
       }
     }
   }

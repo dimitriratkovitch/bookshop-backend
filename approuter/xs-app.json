@@ -4,7 +4,9 @@
     "logoutEndpoint": "/do/logout"
   },
  "routes": [ {
-   "source": "^/(.*)",
-   "destination": "srv_api"
-  } ]
+      "source": "^/(.*)$",
+      "destination": "srv-api",
+      "csrfProtection": true,
+      "authenticationType": "xsuaa"
+    } ]
 }
