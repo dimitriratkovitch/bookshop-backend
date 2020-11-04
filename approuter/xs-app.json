@@ -1,4 +1,8 @@
 {
+  "authenticationMethod": "route",
+  "logout": {
+    "logoutEndpoint": "/do/logout"
+  },
  "routes": [ {
    "source": "^/(.*)",
    "destination": "srv_api"

@@ -39,10 +39,43 @@ modules:
  # ------------------------------------------------------------
    type: nodejs
    path: gen/srv
+   requires:
+    # Resources extracted from CAP configuration
+    - name: bookshop-backend-db
    provides:
     - name: srv-api      # required by consumers of CAP services (e.g. approuter)
       properties:
         srv-url: ${default-url}
 
+ # -------------------- SIDECAR MODULE ------------------------
+ - name: bookshop-db-deployer
+ # ------------------------------------------------------------
+   type: hdb
+   path: gen/db  
+   parameters:
+     buildpack: nodejs_buildpack
+   requires:
+    # 'hana' and 'xsuaa' resources extracted from CAP configuration
+    - name: bookshop-backend-db
+
+resources:
+ # services extracted from CAP configuration
+ # 'service-plan' can be configured via 'cds.requires.<name>.vcap.plan'
+# ------------------------------------------------------------
+ - name: bookshop-backend-db
+# ------------------------------------------------------------
+   type: com.sap.xs.hdi-container
+   parameters:
+     service: hanatrial  # or 'hanatrial' on trial landscapes
+     service-plan: hdi-shared
+   properties:
+     hdi-service-name: ${service-name}
+
+ - name: bookshop-uaa
+   type: org.cloudfoundry.managed-service
+   parameters:
+     path: ./xs-security.json
+     service-plan: application
+     service: xsuaa
 
 
