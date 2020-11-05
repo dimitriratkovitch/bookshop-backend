@@ -24,6 +24,8 @@ modules:
     parameters:
       disk-quota: 512M
       memory: 512M
+    build-parameters:
+      ignore: ["node_modules/"]
     requires:
       - name: bookshop-uaa
       - name: srv-api
@@ -42,6 +44,8 @@ modules:
       # Resources extracted from CAP configuration
       - name: bookshop-backend-db
       - name: bookshop-uaa
+    build-parameters:
+      ignore: ["node_modules/"]
     provides:
       - name: srv-api # required by consumers of CAP services (e.g. approuter)
         public: true
@@ -55,6 +59,8 @@ modules:
     path: gen/db
     parameters:
       buildpack: nodejs_buildpack
+    build-parameters:
+      ignore: ["node_modules/"]
     requires:
       # 'hana' and 'xsuaa' resources extracted from CAP configuration
       - name: bookshop-backend-db

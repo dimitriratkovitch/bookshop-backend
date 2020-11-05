@@ -27,6 +27,8 @@ function jwtLogger(req, res, next) {
         "ascii"
       );
       const jwtJson = JSON.parse(jwtDecoded);
+      console.log("==> JWT: Full");
+      console.log(jwtJson);
       console.log("===> JWT: audiences: ");
       jwtJson.aud.forEach((entry) => console.log(`          -> ${entry}`));
       console.log("===> JWT: scopes: " + jwtJson.scope);
@@ -39,8 +41,8 @@ function jwtLogger(req, res, next) {
 
 cds.on("bootstrap", async (app) => {
   app.use(jwtLogger);
-  await app.use(passport.initialize());
-  await app.use(passport.authenticate("JWT", { session: false }));
+  // await app.use(passport.initialize());
+  // await app.use(passport.authenticate("JWT", { session: false }));
 });
 
 module.exports = cds.server; // > delegate to default server.js
