@@ -1,7 +1,14 @@
 {
   "xsappname": "bookshop-backend",
   "tenant-mode": "dedicated",
-  "scopes": [],
+  "scopes": [
+    {
+      "name": "$XSAPPNAME.scopeforbackend",
+      "grant-as-authority-to-apps": [
+        "$XSAPPNAME(application,cap-bookshop-frontend)"
+      ]
+    }
+  ],
   "attributes": [],
   "role-templates": []
 }
