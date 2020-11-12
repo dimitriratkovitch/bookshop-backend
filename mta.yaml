@@ -17,24 +17,6 @@ build-parameters:
         - npx -p @sap/cds-dk cds build --production
 
 modules:
-  # --------------------- Approuter ------------------------
-  - name: bookshop-backend-approuter
-    type: approuter.nodejs
-    path: approuter
-    parameters:
-      disk-quota: 512M
-      memory: 512M
-    build-parameters:
-      ignore: ["node_modules/"]
-    requires:
-      - name: bookshop-uaa
-      - name: srv-api
-        group: destinations
-        properties:
-          name: srv-api
-          url: "~{srv-url}"
-          forwardAuthToken: true
-
   # --------------------- SERVER MODULE ------------------------
   - name: bookshop-backend-srv
     # ------------------------------------------------------------
@@ -43,7 +25,9 @@ modules:
     requires:
       # Resources extracted from CAP configuration
       - name: bookshop-backend-db
-      - name: bookshop-uaa
+      - name: job-scheduler-uaa
+      - name: job-scheduler
+
     build-parameters:
       ignore: ["node_modules/"]
     provides:
@@ -78,9 +62,14 @@ resources:
     properties:
       hdi-service-name: ${service-name}
 
-  - name: bookshop-uaa
-    type: org.cloudfoundry.managed-service
+  - name: job-scheduler
+    type: org.cloudfoundry.existing-service
     parameters:
-      path: ./xs-security.json
-      service-plan: application
-      service: xsuaa
+      service: jobschedulers
+      service-name: job-scheduler
+
+  - name: job-scheduler-uaa
+    type: org.cloudfoundry.existing-service
+    parameters:
+      service: jobscheduler
+      service-name: job-scheduler-uaa
