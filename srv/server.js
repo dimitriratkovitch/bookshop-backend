@@ -1,17 +1,8 @@
-const xsenv = require("@sap/xsenv");
 const passport = require("passport");
 
-var xsuaaCredentials;
-try {
-  xsenv.loadEnv();
-  const JWTStrategy = require("@sap/xssec").JWTStrategy;
-  const services = xsenv.getServices({ xsuaa: { tags: "xsuaa" } });
-  xsuaaCredentials = services.xsuaa;
-  const jwtStrategy = new JWTStrategy(xsuaaCredentials);
-  passport.use(jwtStrategy);
-} catch (error) {
-  console.warn(error.message);
-}
+
+
+
 
 // Middleware to read JWT sent by JobScheduler
 function jwtLogger(req, res, next) {
@@ -40,9 +31,13 @@ function jwtLogger(req, res, next) {
 }
 
 cds.on("bootstrap", async (app) => {
-  app.use(jwtLogger);
-  // await app.use(passport.initialize());
-  // await app.use(passport.authenticate("JWT", { session: false }));
+
+ // Authenticate in production only using JWT
+  if (process.env.NODE_ENV === 'production') {
+    await app.use(passport.initialize());
+    await app.use(passport.authenticate("JWT", { session: false }));
+  }
+  // app.use(jwtLogger);
 });
 
 module.exports = cds.server; // > delegate to default server.js
