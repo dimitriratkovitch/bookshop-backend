@@ -27,3 +27,11 @@ mta_archives/
 # IDEs
 # .vscode
 # .idea
+
+# added by cds deploy
+default-env.json
+
+# python local modules
+srvpy/local/
+srvpy/.env
+srvpy/default-env.json

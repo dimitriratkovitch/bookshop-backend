@@ -1,40 +1,58 @@
 {
-  "name": "bookshop-backend",
-  "version": "1.0.0",
-  "description": "A simple CAP project.",
-  "repository": "<Add your repository here>",
-  "license": "UNLICENSED",
-  "private": true,
-  "dependencies": {
-    "@sap/cds": "^4",
-    "@sap/hana-client": "^2.6.58",
-    "@sap/xsenv": "^3.1.0",
-    "@sap/xssec": "^3.0.10",
-    "express": "^4",
-    "passport": "^0.4.1"
-  },
-  "devDependencies": {
-    "sqlite3": "^5"
-  },
-  "scripts": {
-    "start": "npx cds run"
-  },
-  "cds": {
-    "hana": {
-      "deploy-format": "hdbtable"
+    "name": "bookshop-backend",
+    "version": "1.0.0",
+    "description": "A simple CAP project.",
+    "repository": "<Add your repository here>",
+    "license": "UNLICENSED",
+    "private": true,
+    "dependencies": {
+        "@sap/cds": "4.4.7",
+        "@sap/cds-dk": "^3.5.1",
+        "@sap/cds-odata-v2-adapter-proxy": "^1.5.10",
+        "@sap/hana-client": "^2.6.58",
+        "@sap/xsenv": "^3.1.0",
+        "@sap/xssec": "^3.0.10",
+        "express": "^4",
+        "passport": "^0.4.1"
     },
-    "requires": {
-      "db": {
-        "kind": "hana"
-      },
-      "uaa": {
-        "kind": "xsuaa"
-      },
-      "auth": {
-        "passport": {
-          "strategy": "JWT"
+    "devDependencies": {
+        "sqlite3": "^5"
+    },
+    "scripts": {
+        "start": "npx cds run"
+    },
+    "cds": {
+        "hana": {
+            "deploy-format": "hdbtable"
+        },
+        "requires": {
+            "db": {
+                "kind": "hana"
+            }
+        },
+        "[production]": {
+            "requires": {
+                "uaa": {
+                    "kind": "xsuaa"
+                }
+            },
+            "auth": {
+                "passport": {
+                    "strategy": "JWT"
+                }
+            }
+        },
+        "[development]": {
+            "requires": {
+                "uaa": {
+                    "kind": "xsuaa"
+                }
+            },
+            "auth": {
+                "passport": {
+                    "strategy": "JWT"
+                }
+            }
         }
-      }
     }
-  }
 }

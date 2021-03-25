@@ -1,30 +1,42 @@
 {
-  "xsappname": "bookshop-backend",
-  "tenant-mode": "dedicated",
-  "scopes": [
-    {
-      "name": "uaa.user",
-      "description": "UAA"
-    },
-    {
-      "name": "$XSAPPNAME.scopeforbackend",
-      "grant-as-authority-to-apps": [
-        "$XSAPPNAME(application,cap-bookshop-frontend)"
-      ],
-      "granted-apps": ["$XSAPPNAME(application,cap-bookshop-frontend)"]
+    "xsappname": "bookshop-backend",
+    "tenant-mode": "dedicated",
+    "scopes": [
+        {
+            "name": "uaa.user",
+            "description": "UAA"
+        },
+        {
+            "name": "$XSAPPNAME.scopeforbackend",
+            "grant-as-authority-to-apps": [
+                "$XSAPPNAME(application,cap-bookshop-frontend)"
+            ],
+            "granted-apps": [
+                "$XSAPPNAME(application,cap-bookshop-frontend)"
+            ]
+        }
+    ],
+    "attributes": [],
+    "role-templates": [
+        {
+            "name": "Token_Exchange",
+            "description": "UAA",
+            "scope-references": [
+                "uaa.user"
+            ]
+        },
+        {
+            "name": "BackendAccess",
+            "default-role-name": "BackendAccessRole",
+            "scope-references": [
+                "$XSAPPNAME.scopeforbackend"
+            ]
+        }
+    ],
+    "oauth2-configuration": {
+        "redirect-uris": [
+            "https://*.eu10.applicationstudio.cloud.sap/**",
+            "https://*.cfapps.eu10.hana.ondemand.com/**"
+        ]
     }
-  ],
-  "attributes": [],
-  "role-templates": [
-    {
-      "name": "Token_Exchange",
-      "description": "UAA",
-      "scope-references": ["uaa.user"]
-    },
-    {
-      "name": "BackendAccess",
-      "default-role-name": "BackendAccessRole",
-      "scope-references": ["$XSAPPNAME.scopeforbackend"]
-    }
-  ]
 }

@@ -1,12 +1,23 @@
 {
-  "authenticationMethod": "route",
-  "logout": {
-    "logoutEndpoint": "/do/logout"
-  },
- "routes": [ {
-      "source": "^/(.*)$",
-      "destination": "srv-api",
-      "csrfProtection": true,
-      "authenticationType": "xsuaa"
-    } ]
+    "authenticationMethod": "route",
+    "logout": {
+        "logoutEndpoint": "/do/logout"
+    },
+    "routes": [
+        {
+            "source": "^/python(.*)",
+            "target": "$1",
+            "destination": "srvpy-api",
+            "csrfProtection": true,
+            "authenticationType": "xsuaa"
+        },
+        {
+            "source": "^/node(.*)",
+            "target": "$1",
+            "destination": "srv-api",
+            "csrfProtection": true,
+            "authenticationType": "xsuaa"
+        }
+    ]
 }
+

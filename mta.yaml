@@ -27,13 +27,20 @@ modules:
     build-parameters:
       ignore: ["node_modules/"]
     requires:
-      - name: bookshop-uaa
+      - name: bookshop-backend-uaa
       - name: srv-api
         group: destinations
         properties:
           name: srv-api
           url: "~{srv-url}"
           forwardAuthToken: true
+      - name: srvpy-api
+        group: destinations
+        properties:
+          name: srvpy-api
+          url: "~{srv-url}"
+          forwardAuthToken: true
+
 
   # --------------------- SERVER MODULE ------------------------
   - name: bookshop-backend-srv
@@ -43,7 +50,7 @@ modules:
     requires:
       # Resources extracted from CAP configuration
       - name: bookshop-backend-db
-      - name: bookshop-uaa
+      - name: bookshop-backend-uaa
     build-parameters:
       ignore: ["node_modules/"]
     provides:
@@ -52,6 +59,25 @@ modules:
         properties:
           srv-url: ${default-url}
 
+  # --------------------- SERVER MODULE ------------------------
+  - name: bookshop-backend-srvpy
+    # ------------------------------------------------------------
+    type: python
+    path: srvpy
+    parameters:
+      command: python server.py
+    requires:
+      # Resources extracted from CAP configuration
+      - name: bookshop-backend-db
+      - name: bookshop-backend-uaa
+    build-parameters:
+      ignore: ["local/"]
+    provides:
+      - name: srvpy-api # required by consumers of CAP services (e.g. approuter)
+        public: true
+        properties:
+          srv-url: ${default-url}
+          
   # -------------------- SIDECAR MODULE ------------------------
   - name: bookshop-db-deployer
     # ------------------------------------------------------------
@@ -73,12 +99,11 @@ resources:
     # ------------------------------------------------------------
     type: com.sap.xs.hdi-container
     parameters:
-      service: hanatrial # or 'hanatrial' on trial landscapes
       service-plan: hdi-shared
     properties:
       hdi-service-name: ${service-name}
 
-  - name: bookshop-uaa
+  - name: bookshop-backend-uaa
     type: org.cloudfoundry.managed-service
     parameters:
       path: ./xs-security.json
